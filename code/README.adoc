@@ -101,7 +101,7 @@ You can run `pytest --help` to learn about the various options, but I like to ru
 * `-v`|`--verbose`: increase verbosity
 
 The `-x` flag prevents the entire test suite running when it encounters an error.
-This is especially important for beginners as we should not overwhelm them an outpouring of failing tests.
+This is especially important for beginners as we should not overwhelm them with an outpouring of failing tests.
 If the first test fails -- that there is no program to check -- there's no point in running any further tests:
 
 ----
@@ -110,7 +110,7 @@ $ pytest -xv test.py
 
 NOTE: I have provided a `Makefile` that has a `test` target so you can run `make test` as a shortcut.
 
-However you run the `pytest` command, you should see that the first test fails:
+However you run the `pytest` command, you should see that the first test fails showing that the `add.py` program does not exist:
 
 ----
 $ make
@@ -141,9 +141,8 @@ It's a bit to decipher the test output, but part of what we're teaching is how t
 
 == Getting started
 
-
 In order to pass the first test, we need to create our program.
-This will actually suffice to pass the first test:
+This will actually suffice:
 
 ----
 $ touch add.py
@@ -157,7 +156,6 @@ $ make test
 pytest -xv test.py
 ============================= test session starts ==============================
 ...
-collected 5 items
 
 test.py::test_exists PASSED                                              [ 20%] <1>
 test.py::test_usage FAILED                                               [ 40%] <2>
@@ -286,8 +284,8 @@ pytest -xv test.py
 test.py::test_exists PASSED                                              [ 20%]
 test.py::test_usage PASSED                                               [ 40%]
 test.py::test_wrong_number_args PASSED                                   [ 60%]
-test.py::test_not_numbers PASSED                                         [ 80%]
-test.py::test_valid_input FAILED                                         [100%]
+test.py::test_not_numbers PASSED                                         [ 80%] <1>
+test.py::test_valid_input FAILED                                         [100%] <2>
 
 =================================== FAILURES ===================================
 _______________________________ test_valid_input _______________________________
@@ -299,7 +297,7 @@ _______________________________ test_valid_input _______________________________
             rv, out = getstatusoutput(f'{prg} {x} {y}')
             assert rv == 0
 >           assert out.rstrip() == f'{x} + {y} = {z}'
-E           AssertionError: assert '[0, 0]' == '0 + 0 = 0' <1>
+E           AssertionError: assert '[0, 0]' == '0 + 0 = 0' <3>
 E             - [0, 0]
 E             + 0 + 0 = 0
 
@@ -308,7 +306,9 @@ test.py:63: AssertionError
 ========================= 1 failed, 4 passed in 0.43s ==========================
 ----
 
-<1> The test got the string `'[0, 0]'` when it expected `'0 + 0 = 0'`.
+<1> All these tests are passing now! I always check with bad inputs, so these tests pass in the wrong number and type of arguments to ensure the program fails. 
+<2> When we finally run the program with valid inputs, it fails to produce the correct output.
+<3> Our program produced the string `'[0, 0]'` but the test expected to see `'0 + 0 = 0'`.
 
 We actually ended up passing several tests by virtue of using `argparse` to define the program's parameters.
 If we look at the function called `test_wrong_number_args` in `test.py`, we see that it runs our program with 0, 1, and 3 integer values to ensure that all fail:
@@ -375,3 +375,27 @@ def main():
 
 <1> Unpack the two number into the variable `n1` and `n2`.
 <2> Use an f-string to format the two number and their sum into the output string to `print()`.
+
+== Conclusion
+
+Testing provides immediate feedback to the student, allowing them to proceed at their own pace.
+I use this framework for both in-class, live-coding examples as well as for at-home practice exercises.
+Some students may spend 20 minutes on an assignment, others several hours.
+The tests let them know what their mistakes are and what is expected to fix their programs.
+
+Using test-driven development to teach programming is arguably harder than simply asking students to eyeball their programs.
+Most programming books and courses expect the novice to evaluate their own programs and find their own mistakes.
+While using tests and reading the output is intimidating to the beginner, my experience is that students quickly learn to rely on the tests and, in fact, find joy in each additional test that passes.
+
+I believe we should be using TDD ideas in the classroom not only to provide valuable feedback to the students but also to teach them industry best practices.
+What I have presented here is an introduction to _integration testing_ which tests a program as a whole from the outside, but TDD provides further benefits as we move to the level of _unit testing_ where we teach students to write *functions* and *tests for those functions*.
+It's my sincere belief that teaching students how to debug and test at these finer levels leads to far greater understanding and confidence and will produce programmers who are truly ready to create documented, tested, and reproducible software.
+
+== Resources
+
+If you would like to explore these ideas further, I have created the following resources:
+
+* https://github.com/kyclark/remote.python.pizza[remote.python.pizza presentation and code]
+* https://www.manning.com/books/tiny-python-projects[Tiny Python Projects at Manning]
+* https://github.com/kyclark/tiny_python_projects[GitHub repo]
+* https://www.youtube.com/user/kyclark[YouTube videos for TPP chapters]

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Add to integer values"""
+"""Add two integer values"""
 
 import argparse
 
 
 # --------------------------------------------------
 def get_args():
-    """get args"""
+    """Get command-line arguments"""
 
     parser = argparse.ArgumentParser(
         description='Add two integer values',
@@ -23,7 +23,7 @@ def get_args():
 
 # --------------------------------------------------
 def main():
-    """main"""
+    """Make a jazz noise here"""
 
     args = get_args()
     n1, n2 = args.numbers
