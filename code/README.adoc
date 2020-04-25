@@ -72,7 +72,10 @@ In the spirit of TDD, we will *first* run the tests found in `test.py` using the
 $ python3 -m pip install pytest
 ----
 
-The `pytest` module will run all the functions found in the provided `test.py` in the order that they are declared.
+The `pytest` module will run all the functions with names starting with `test_` that are found in the provided `test.py`.
+The `test_` functions are run in the order in which they are declared in the file, and I usually order them in a way that leads the student through a logical progression.
+For instance, we first have to have a program with a given name, that program should be runnable, and it should produce help documentation, etc.
+
 I have written several tests that will run the expected `add.py` program to ensure it meets the program specifications:
 
 . The program accepts only two valid integer values.
